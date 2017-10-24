@@ -21,10 +21,11 @@ var readlineSync = require("readline-sync");
 
 var key = false;
 var moves = 10;
+var count = 0;
 var life = true;
 var score = 0;
 var falseItems = ["table", "wardrobe", "television", "jewellry", "bed", "box"];
-var deathItems = ["carbinet", "window", "wall"];
+var deathItems = ["carbinet", "window", "wall", "hole"];
 
 console.log("Welcome to Room No Retrun!! \n\n In this room there are the following items: television, bed, wardrobe, jewellry box, window, carbinet, hole in a wall, table\n\n Look for the key and open the door to your freedom ");
 
@@ -51,6 +52,7 @@ while (life === true && moves !== 0) {
       if (input.indexOf(falseItems[i]) !== -1) {
         console.log("You check the " + falseItems[i] + " and there was no key try somewhere else");
         moves--;
+        count++
       }
     }
   } else if (check(input, deathItems) === true && input.indexOf("under the bed") === -1) {
@@ -59,8 +61,9 @@ while (life === true && moves !== 0) {
 
         moves--;
         console.log("You at the " + deathItems[i] + " and you got electrocuted and died ");
-        console.log("You used " + (10 - moves) + " moves and your score was " + (moves * 7) + "\n\n GAME OVER");
+        console.log("You used " + (10 - moves) + " moves and your score was " + (moves * 6) + "\n\n GAME OVER");
         moves = 0;
+        count++;
         life = !life;
       }
     }
@@ -70,9 +73,11 @@ while (life === true && moves !== 0) {
     key = true;
     var input2 = readlineSync.question("Go and open the door now ");
     moves--;
+    count++;
     while (input2.indexOf("door") === -1) {
       input2 = readlineSync.question("Go and open the door now ");
       moves--;
+      count++;
     }
     if (input2.indexOf("door") !== -1) {
       console.log("You have earned your freedom. Awesome!!");
@@ -82,15 +87,17 @@ while (life === true && moves !== 0) {
       console.log("Do not waste time!");
       input2 = readlineSync.question("Go and open the door now ");
       moves--;
+      count++;
     }
   } else if (input.indexOf("door") !== -1) {
     console.log("You need the key to open the door");
   } else {
     console.log("I do not understand that commmand");
     moves--;
+    count++;
   }
 
 }
-if (moves === 0) {
-  console.log("You used " + (10 - moves) + " moves and your score was " + (moves * 7) + "\n\n GAME OVER");
+if (moves === 0 && count == 10) {
+  console.log("You used " + (10 - moves) + " moves and your score was " + (moves * 6) + "\n\n GAME OVER");
 }
